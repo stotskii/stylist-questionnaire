@@ -273,14 +273,14 @@
       var q = card.querySelector(".q");
       if(!q) return;
       var label = q.textContent.replace(/^\d+\.\s*/, "").trim();
-      var val = "";
-      var grp = card.querySelector("[data-name]");
-      if(grp){
-        var checked = grp.querySelector("input:checked");
-        val = checked ? checked.value : "—";
+      var val = "—";
+      var radios = card.querySelectorAll("input[type=radio]");
+      if(radios.length){
+        var checked = card.querySelector("input[type=radio]:checked");
+        if(checked) val = checked.value;
       } else {
         var ta = card.querySelector("textarea");
-        val = ta && ta.value.trim() ? ta.value.trim() : "—";
+        if(ta && ta.value.trim()) val = ta.value.trim();
       }
       lines.push("• " + label);
       lines.push("  " + val);
