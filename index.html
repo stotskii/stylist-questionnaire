@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Анкета — приложение-стилист</title>
+<meta name="description" content="Короткая анкета, чтобы сделать приложение-стилист именно под тебя.">
+<style>
+  :root{
+    --bg:#faf8f5; --surface:#ffffff; --text:#1c1a17; --muted:#7a756d; --hint:#a39d93;
+    --line:#e7e2da; --line2:#d8d2c8; --accent:#9a6b4f; --accent-soft:#f3ece6;
+    --ok:#3b6d4b; --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#16140f; --surface:#1f1c17; --text:#f0ece4; --muted:#a39d93; --hint:#79736a;
+      --line:#322d26; --line2:#403a31; --accent:#c99c7e; --accent-soft:#2a2118; }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:640px;margin:0 auto;padding:24px 18px 64px;}
+  header{padding:18px 0 8px;}
+  h1{font-size:24px;font-weight:600;margin:0 0 6px;letter-spacing:-.01em;}
+  .lead{color:var(--muted);font-size:15px;margin:0 0 8px;}
+  .meta{color:var(--hint);font-size:13px;margin:0;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 16px;margin:14px 0;}
+  .sec{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);
+    font-weight:600;margin:26px 4px 2px;}
+  .q{font-size:16px;font-weight:550;margin:0 0 12px;}
+  .opts{display:flex;flex-wrap:wrap;gap:8px;}
+  .opt{position:relative;}
+  .opt input{position:absolute;opacity:0;width:0;height:0;}
+  .opt label{display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+    border:1px solid var(--line2);border-radius:10px;padding:9px 14px;font-size:15px;
+    background:var(--surface);transition:.12s;user-select:none;}
+  .opt label:hover{border-color:var(--accent);}
+  .opt input:checked + label{background:var(--accent-soft);border-color:var(--accent);
+    color:var(--accent);font-weight:550;}
+  .opt input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;}
+  .cardopt label{display:flex;flex-direction:column;align-items:flex-start;gap:3px;
+    width:100%;height:100%;padding:13px 14px;}
+  .cardopt .t{font-size:15px;font-weight:550;}
+  .cardopt .s{font-size:12.5px;color:var(--muted);font-weight:400;line-height:1.35;}
+  .cardopt input:checked + label .s{color:var(--accent);}
+  textarea{width:100%;min-height:74px;resize:vertical;border:1px solid var(--line2);
+    border-radius:10px;padding:11px 12px;font:inherit;font-size:15px;background:var(--surface);
+    color:var(--text);}
+  textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);}
+  .submit{display:block;width:100%;margin-top:24px;background:var(--accent);color:#fff;border:none;
+    border-radius:12px;padding:15px;font-size:16px;font-weight:600;cursor:pointer;letter-spacing:.01em;}
+  .submit:active{transform:scale(.99);}
+  .result{display:none;}
+  .result.show{display:block;}
+  .result textarea{min-height:240px;font-size:13.5px;line-height:1.5;}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+  .btn{flex:1 1 auto;min-width:140px;text-align:center;text-decoration:none;
+    border:1px solid var(--line2);border-radius:10px;padding:12px;font-size:15px;font-weight:550;
+    color:var(--text);background:var(--surface);cursor:pointer;}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .done{color:var(--ok);font-size:14px;margin-top:10px;min-height:20px;}
+  .foot{color:var(--hint);font-size:12.5px;text-align:center;margin-top:34px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Анкета: приложение-стилист</h1>
+    <p class="lead">Несколько вопросов, чтобы сделать приложение именно под тебя. Где есть варианты — просто выбери; где их нет — напиши своими словами. Если всё равно, так и пиши «всё равно». Заполняется минут за 10.</p>
+    <p class="meta">Ответы нигде не публикуются — в конце ты сама отправишь их одним сообщением.</p>
+  </header>
+
+  <form id="form">
+
+    <div class="sec">Телефон и нынешнее приложение</div>
+
+    <div class="card">
+      <p class="q">1. Какой у тебя телефон?</p>
+      <div class="opts" data-name="Телефон">
+        <span class="opt"><input type="radio" id="ph1" name="phone" value="айфон"><label for="ph1">айфон</label></span>
+        <span class="opt"><input type="radio" id="ph2" name="phone" value="андроид"><label for="ph2">андроид</label></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="q">2. Как точно называется приложение, где сейчас твой гардероб?</p>
+      <textarea data-name="Текущее приложение" placeholder="посмотри название в телефоне — например Whering, Acloset, Stylebook…"></textarea>
+    </div>
+
+    <div class="card">
+      <p class="q">3. Что в нём нравится и обязательно сохранить?</p>
+      <textarea data-name="Что нравится сейчас" placeholder="что удобно, чем пользуешься чаще всего"></textarea>
+    </div>
+
+    <div class="card">
+      <p class="q">4. Что бесит или чего не хватает?</p>
+      <textarea data-name="Что бесит сейчас" placeholder="что раздражает, чего хотелось бы"></textarea>
+    </div>
+
+    <div class="sec">Твой гардероб и стиль</div>
+
+    <div class="card">
+      <p class="q">5. Сколько примерно вещей останется после того, как выкинешь домашние?</p>
+      <div class="opts" data-name="Размер гардероба">
+        <span class="opt"><input type="radio" id="sz1" name="size" value="меньше 30"><label for="sz1">меньше 30</label></span>
+        <span class="opt"><input type="radio" id="sz2" name="size" value="30–70"><label for="sz2">30–70</label></span>
+        <span class="opt"><input type="radio" id="sz3" name="size" value="70–150"><label for="sz3">70–150</label></span>
+        <span class="opt"><input type="radio" id="sz4" name="size" value="больше 150"><label for="sz4">больше 150</label></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="q">6. Какие бренды ты обычно носишь или любишь? (пару примеров)</p>
+      <textarea data-name="Бренды" placeholder="например Zara, COS, Maje, локальные марки…"></textarea>
+    </div>
+
+    <div class="card">
+      <p class="q">7. Сколько обычно готова потратить на одну вещь?</p>
+      <div class="opts" data-name="Бюджет на вещь">
+        <span class="opt"><input type="radio" id="b1" name="budget" value="до 3 тыс"><label for="b1">до 3 тыс</label></span>
+        <span class="opt"><input type="radio" id="b2" name="budget" value="3–8 тыс"><label for="b2">3–8 тыс</label></span>
+        <span class="opt"><input type="radio" id="b3" name="budget" value="8–20 тыс"><label for="b3">8–20 тыс</label></span>
+        <span class="opt"><input type="radio" id="b4" name="budget" value="20 тыс+"><label for="b4">20 тыс+</label></span>
+        <span class="opt"><input type="radio" id="b5" name="budget" value="по-разному"><label for="b5">по-разному</label></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="q">8. Где ты обычно покупаешь одежду и в какой стране/городе?</p>
+      <textarea data-name="Где покупает" placeholder="магазины/сайты + город или страна (для валюты и доступности)"></textarea>
+    </div>
+
+    <div class="card">
+      <p class="q">9. Ты чаще одеваешься…</p>
+      <div class="opts" data-name="Стиль">
+        <span class="opt"><input type="radio" id="st1" name="style" value="нарядно"><label for="st1">нарядно</label></span>
+        <span class="opt"><input type="radio" id="st2" name="style" value="повседневно"><label for="st2">повседневно</label></span>
+        <span class="opt"><input type="radio" id="st3" name="style" value="поровну"><label for="st3">поровну</label></span>
+      </div>
+    </div>
+
+    <div class="sec">Что главное и в каком порядке</div>
+
+    <div class="card">
+      <p class="q">10. Что важнее запустить сначала?</p>
+      <div class="cards" data-name="Приоритет">
+        <span class="opt cardopt"><input type="radio" id="pr1" name="prio" value="сначала гардероб"><label for="pr1"><span class="t">Сначала гардероб</span><span class="s">как сейчас, чтобы уйти со старого приложения</span></label></span>
+        <span class="opt cardopt"><input type="radio" id="pr2" name="prio" value="сначала стилист"><label for="pr2"><span class="t">Сначала стилист</span><span class="s">сам собирает образы и подбирает вещи</span></label></span>
+        <span class="opt cardopt"><input type="radio" id="pr3" name="prio" value="всё сразу"><label for="pr3"><span class="t">Всё сразу</span><span class="s">готова подождать дольше</span></label></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="q">11. Готова временно пользоваться старым приложением, пока делается «стилист»?</p>
+      <div class="opts" data-name="Временно на старом">
+        <span class="opt"><input type="radio" id="io1" name="interim" value="да"><label for="io1">да</label></span>
+        <span class="opt"><input type="radio" id="io2" name="interim" value="нет"><label for="io2">нет</label></span>
+      </div>
+    </div>
+
+    <div class="sec">Умный стилист</div>
+
+    <div class="card">
+      <p class="q">12. Когда стилист нашёл вещь в интернете — что тебе нужно?</p>
+      <div class="cards" data-name="Подбор из интернета">
+        <span class="opt cardopt"><input type="radio" id="sh1" name="shop" value="показать ссылку, покупаю сама"><label for="sh1"><span class="t">Показать ссылку</span><span class="s">покупаю сама на сайте магазина</span></label></span>
+        <span class="opt cardopt"><input type="radio" id="sh2" name="shop" value="покупать в приложении"><label for="sh2"><span class="t">Покупать в приложении</span><span class="s">всё внутри, не уходя на сайт</span></label></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="q">13. Бренды и цены для подбора — как удобнее задать?</p>
+      <div class="opts" data-name="Источник брендов/цен">
+        <span class="opt"><input type="radio" id="bs1" name="brsrc" value="задам сама списком"><label for="bs1">задам сама списком</label></span>
+        <span class="opt"><input type="radio" id="bs2" name="brsrc" value="пусть угадывает сам"><label for="bs2">пусть угадывает сам</label></span>
+        <span class="opt"><input type="radio" id="bs3" name="brsrc" value="и так, и так"><label for="bs3">и так, и так</label></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="q">14. Сколько вариантов показывать на один запрос?</p>
+      <div class="opts" data-name="Кол-во вариантов">
+        <span class="opt"><input type="radio" id="v1" name="variants" value="побольше разных"><label for="v1">побольше разных</label></span>
+        <span class="opt"><input type="radio" id="v2" name="variants" value="1–2, но в точку"><label for="v2">1–2, но в точку</label></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="q">15. «Похоже, а не точь-в-точь» — по-прежнему важно?</p>
+      <div class="opts" data-name="Похоже, не точно">
+        <span class="opt"><input type="radio" id="sm1" name="similar" value="да, похоже важно"><label for="sm1">да, похоже важно</label></span>
+        <span class="opt"><input type="radio" id="sm2" name="similar" value="нет, хочу точно"><label for="sm2">нет, хочу точно</label></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="q">16. Учитывать твой размер при подборе из интернета?</p>
+      <div class="opts" data-name="Учитывать размер">
+        <span class="opt"><input type="radio" id="us1" name="usesize" value="да, укажу размеры"><label for="us1">да, укажу размеры</label></span>
+        <span class="opt"><input type="radio" id="us2" name="usesize" value="нет, главное фасон и цвет"><label for="us2">нет, главное фасон и цвет</label></span>
+      </div>
+    </div>
+
+    <div class="sec">Фото и приватность</div>
+
+    <div class="card">
+      <p class="q">17. Чтобы понять, какие тебе идут цвета и фасоны — ок загрузить пару своих фото?</p>
+      <div class="cards" data-name="Фото для анализа">
+        <span class="opt cardopt"><input type="radio" id="ap1" name="photos" value="да, загружу фото"><label for="ap1"><span class="t">Да, загружу фото</span><span class="s">лицо/фигура для анализа</span></label></span>
+        <span class="opt cardopt"><input type="radio" id="ap2" name="photos" value="без фото, отвечу сама"><label for="ap2"><span class="t">Без фото</span><span class="s">отвечу на вопросы про цвета/фасоны</span></label></span>
+        <span class="opt cardopt"><input type="radio" id="ap3" name="photos" value="не уверена"><label for="ap3"><span class="t">Не уверена</span><span class="s">решим вместе</span></label></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="q">18. Где хранить фото вещей и твои фото?</p>
+      <div class="cards" data-name="Хранение фото">
+        <span class="opt cardopt"><input type="radio" id="sg1" name="storage" value="можно в облаке"><label for="sg1"><span class="t">Можно в облаке</span><span class="s">стилист работает умнее и быстрее</span></label></span>
+        <span class="opt cardopt"><input type="radio" id="sg2" name="storage" value="только на телефоне"><label for="sg2"><span class="t">Только на телефоне</span><span class="s">часть умных функций ограничена</span></label></span>
+        <span class="opt cardopt"><input type="radio" id="sg3" name="storage" value="реши сам"><label for="sg3"><span class="t">Реши сам</span><span class="s">как удобнее и безопаснее</span></label></span>
+      </div>
+    </div>
+
+    <div class="sec">Перенос и пожелания</div>
+
+    <div class="card">
+      <p class="q">19. Переносить из старого приложения уже собранные образы и теги?</p>
+      <div class="opts" data-name="Перенос данных">
+        <span class="opt"><input type="radio" id="mg1" name="migr" value="перенести всё"><label for="mg1">перенести всё</label></span>
+        <span class="opt"><input type="radio" id="mg2" name="migr" value="пересоберу заново"><label for="mg2">пересоберу заново</label></span>
+        <span class="opt"><input type="radio" id="mg3" name="migr" value="перенести часть"><label for="mg3">перенести часть</label></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="q">20. Что-то ещё, что ты очень хочешь, или забытые функции из старого приложения?</p>
+      <textarea data-name="Пожелания" placeholder="любые хотелки и важные мелочи"></textarea>
+    </div>
+
+    <div class="card">
+      <p class="q">21. Опиши словами образы/референсы, которые тебе нравятся (скриншоты пришлёшь отдельно).</p>
+      <textarea data-name="Референсы (описание)" placeholder="какие образы нравятся, чей стиль, что цепляет"></textarea>
+    </div>
+
+    <button type="button" class="submit" id="go">Сформировать ответы</button>
+  </form>
+
+  <div class="card result" id="result">
+    <p class="q">Готово! Скопируй и пришли Саше — или нажми кнопку.</p>
+    <textarea id="out" readonly></textarea>
+    <div class="actions">
+      <button type="button" class="btn primary" id="copy">Скопировать</button>
+      <a class="btn" id="tg" target="_blank" rel="noopener">Отправить в Telegram</a>
+      <a class="btn" id="mail">На почту</a>
+    </div>
+    <p class="done" id="doneMsg"></p>
+  </div>
+
+  <p class="foot">Анкета для приложения-стилиста · заполняется один раз</p>
+</div>
+
+<script>
+(function(){
+  var RECIPIENT_EMAIL = "prestige.concierge.pro@gmail.com";
+
+  function collect(){
+    var lines = ["Анкета: приложение-стилист", "————————————————"];
+    var blocks = document.querySelectorAll("#form .card");
+    blocks.forEach(function(card){
+      var q = card.querySelector(".q");
+      if(!q) return;
+      var label = q.textContent.replace(/^\d+\.\s*/, "").trim();
+      var val = "";
+      var grp = card.querySelector("[data-name]");
+      if(grp){
+        var checked = grp.querySelector("input:checked");
+        val = checked ? checked.value : "—";
+      } else {
+        var ta = card.querySelector("textarea");
+        val = ta && ta.value.trim() ? ta.value.trim() : "—";
+      }
+      lines.push("• " + label);
+      lines.push("  " + val);
+    });
+    return lines.join("\n");
+  }
+
+  var resultBox = document.getElementById("result");
+  var out = document.getElementById("out");
+  var doneMsg = document.getElementById("doneMsg");
+
+  document.getElementById("go").addEventListener("click", function(){
+    var text = collect();
+    out.value = text;
+    resultBox.classList.add("show");
+    var enc = encodeURIComponent(text);
+    document.getElementById("tg").href = "https://t.me/share/url?url=" + encodeURIComponent(" ") + "&text=" + enc;
+    document.getElementById("mail").href = "mailto:" + RECIPIENT_EMAIL +
+      "?subject=" + encodeURIComponent("Анкета: приложение-стилист") + "&body=" + enc;
+    resultBox.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+
+  document.getElementById("copy").addEventListener("click", function(){
+    out.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch(e){}
+    if(navigator.clipboard){ navigator.clipboard.writeText(out.value).then(function(){
+      doneMsg.textContent = "Скопировано ✓ Теперь вставь в чат Саше.";
+    }); } else {
+      doneMsg.textContent = ok ? "Скопировано ✓ Теперь вставь в чат Саше." : "Выдели текст и скопируй вручную.";
+    }
+  });
+})();
+</script>
+</body>
+</html>
